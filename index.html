@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>javaScriptSchool High</title>
+    <link rel="stylesheet" href="css/css.css" />
+</head>
+<body>
+    <form target="table_holder" id="addStudent">
+        <label for="newStudent"><h2>Add a new student!</h2></label>
+        <input type="text" name="newStudent" id="newStudent" pattern="^[A-Z][a-z]+\s[A-Z][a-z]+$" title="Please provide a First name starting with a capital letter and a Last name with the same parameters." placeholder="First Last" required>
+        <select name="sub1" class="sub" id="sub1" required>
+            <option value="">Subject 1</option>
+        </select>
+        <select name="sub2" class="sub" id="sub2" required>
+            <option value="">Subject 2</option>
+        </select>
+        <select name="sub3" class="sub" id="sub3" required>
+            <option value="">Subject 3</option>
+        </select>
+        <select name="sub4" class="sub" id="sub4" required>
+            <option value="">Subject 4</option>
+        </select>
+        <button onclick="(newStudent.value) ? addStudent(studentArray) : false;">Add Student</button>
+    </form>
+    <form target="table_holder" id="viewBySubject">
+        <h1 id="welcome">Welcome to Class!</h1>
+        <h1>View by Class</h1>
+        <label for="whichSubject">Find Students By Subject:</label>
+        <select name="whichSubject" id="whichSubject" class="sub" required>
+            <option value="">Subject</option>
+        </select>
+        <button onclick="whoIsInMyClass();" id="whoClass">Submit</button>
+        <button onclick="backFromClass();" id="backClass">&#11178;</button>
+    </form>
+    <form target="table_holder" id="changeGrade">
+        <label for="name"><h2>Input the student, and which class grade you want to change</h2></label>
+        <select name="name" id="name" aria-placeholder="Student Name">
+            <option value="">Student Name</option>
+        </select>
+        <select name="sub" class="sub" id="sub">
+            <option value="">Subject</option>
+        </select>
+        <input type="number" name="grader" id="grader" min="0" max="100" value="70">
+        <button onclick="(byClassMode)? setGrade(studentsInMyClass) : setGrade(studentArray);">ok</button>
+    </form>
+    <nav>
+        <label for="nav"><h3>Find Student</h3></label>
+        <select name="nav" id="nav" onchange="window.location.href = (this.value) ? (this.value):false;">
+            <option value="">Student Name</option>
+        </select>
+        <div>
+            <a href="#welcome">&#8682;</a>
+        </div>
+    </nav>
+    <table id="studentTable">
+        <tr>
+            <th><strong><em>Student Name</em></strong></th>
+            <th>Subject</th>
+            <th>Grade</th>
+            <th>Delete</th>
+        </tr>
+        <caption>All the students</caption>
+    </table>
+    <div name="java"id="java"></div>
+    <iframe src="about:blank" frameborder="0" width="0px" height="0px" name="table_holder"></iframe>
+    <script src="javascript/js.js"></script>
+</body>
+</html>
