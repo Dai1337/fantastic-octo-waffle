@@ -1,47 +1,60 @@
 @import url('https://fonts.googleapis.com/css?family=Titillium+Web&display=swap');
-/* rgba(248, 255, 229, 1);
-rgba(6, 214, 160, 1);
-rgba(27, 154, 170, 1);
-rgba(239, 71, 111, 1);
-rgba(255, 196, 61, 1);*/
+:root {
+    --color1: #23374d;
+    --color2: #1089ff;
+    --color3: #e5e5e5;
+    --color4: #eeeeee;
+}
 body{
-    min-width: 700px; 
+    min-width: 821px; 
     width: auto !important;
-    width: 375px;
     margin: 0px;
+    text-align: center;
     font-family: 'Titillium Web', sans-serif;
-    background-color: rgba(27, 154, 170, 1);
+    background-color: var(--color3);
+    color: var(--color1);
     display: grid;
     grid-template-columns: 30% 100fr 30%;
-    grid-template-rows: 325px 200px auto;
+    grid-template-rows: 175px 100px 475px auto;
+}
+#welcome{
+    grid-column: 2;
+    grid-row: 1;
 }
 nav{
-    grid-column: 3;
     position: fixed;
     z-index: 3;
     right:0px;
-    bottom: 25%;
-    opacity: 0.75;
+    top: 50%;
 }
 nav h3{
     margin-bottom: 0px;
     border-radius: 15px;
 }
-nav div{
+nav div{    
     position: absolute;
     right:0%;
     margin-top: -15px;
 }
 nav a{
+    display: block;
     text-decoration: none;  
     font-size: 2em;
+    border-radius: 15px;
     padding: 5px 20px;
-    border-radius: 50%;
+    transform: translateY(65px);
 }
 nav h3, nav a{
     text-align: center;
-    background-color: rgba(248, 255, 229, 1);
+    background-color:var(--color1);
+    color:var(--color4);
     padding:5px;
+}
+nav select{
+    right:0px;
+}
+nav a:hover{
+    color: var(--color2);
 }
 select option{
     height: 100px;
@@ -49,69 +62,156 @@ select option{
 }
 form{
     position: relative;
-    /* float: left; */
-    margin-right: 10%;
 }
-table, th, tr, td{
-    z-index: 2;
-    border:  1px solid black;
-    border-collapse: collapse;
-    padding: 5px 10px;
-}
-th{
+#header{
+    position: sticky;
+    position: -webkit-sticky;
+    display: block;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
+    background-color: var(--color1);
+    color: var(--color4);
+    border: 1px solid var(--color4);
+    border-collapse: collapse;
+    padding: 30px, 0px;
+    flex-wrap: nowrap;
+    top: 0;
+    left: 0px;
 }
-table,th{
-    border:hidden;
-    margin: 10px;
-}
-table{
+#studentTable{
     grid-column: 2;
-    grid-row: 1;
+    grid-row: 2;
     grid-row-end: 2;
-    margin-bottom: 15px;
+    display: grid;
+    position: relative;
+    transform: translateY(-100px);
+    margin: 0px, 10px, 5px;
+    width:100%;
 }
-tr{
-    background-color: rgba(6, 214, 160, 1);
+#studentTable div{
+    grid-column-start: 1;
+    grid-column-end: 4;
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: 1000px;
+    height: 60px;
 }
 button{
-    background-color: rgba(239, 71, 111, 1);
+    /* border: 1px solid var(--color1); */
+    box-shadow: 0px 35px 20px var(--color2) inset;
+    background-color: var(--color3);
     border-radius: 15px;
     padding: 15px;
 }
+div, p{
+    display: inline-block;
+}
+div div div, #header div{
+    line-height: 60px;
+    width: 20%;
+    overflow: hidden;
+}
+div div:first-child{
+    grid-column: 1;
+}
+div div:last-child{
+    grid-column: 2;
+}
+div.table:nth-child(3){
+    grid-column: 3;
+}
+div.table:nth-child(4){
+    grid-column: 4;
+}
 button:hover{
-    background-color: rgba(248, 255, 229, 1);
+    box-shadow: 0px 35px 20px var(--color1) inset;
+    color: var(--color4);
 }
 input, select{
     border-radius: 15px;
     padding: 10px;
-    background-color: rgba(248, 255, 229, 1);
+    background-color: var(--color3);
     margin-bottom: 20px;
 }
-nav select{
-    right:0px;
-    /* position: fixed; */
+form{
+    background-color: var(--color1);
+    color: var(--color4);
+    height: fit-content;
 }
 #addStudent{
+    border-radius: 15px 0px 15px 15px;
     grid-column: 1;
-    grid-row: 2;
+    grid-row: 3;
     position: relative;
 }
 #viewBySubject{
+    border-radius: 15px 15px 0px 15px;
     grid-column: 1;
     grid-row: 1;
     position: relative;
-
 }
 #changeGrade{
+    border-radius: 15px 15px 15px 0px;
     grid-column: 3;
     grid-row: 1;
+    grid-row-end: 2;
+    height: 330px;
     position: relative;
-    clear:left;
+    margin-left: auto;
+    margin-right: auto;
 }
 #backClass{
-    position: absolute;
+    position: relative;
     display: none;
-    right: 0px;
+}
+#confirmContainer{
+    position: fixed;
+    height: 100vh;
+    width: 100%;
+    background-image: radial-gradient(rgb(255,255,255,0.5),rgb(0,0,0,0.5));
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+    z-index: 4;
+}
+#confirm{
+    font-size: 2em;
+    color: var(--color4);
+    padding: 15px;
+    position: absolute;
+    width: 300px;
+    height: auto;
+    font-weight: bolder;
+    text-align: center;
+    top: 25%;
+    left: 50%;
+    border-radius: 15px;
+    transform: translate(-50%);
+    background-color: var(--color2);
+    opacity: .8;
+    border: 5px solid var(--color4);
+    z-index: 4;
+    text-overflow:clip;
+}
+#confirm button{
+    position: absolute;
+    bottom: 5px;
+    width: 45%;
+    height: auto;
+}
+#yes{
+    left: 5px;
+    background-color: #060;
+    box-shadow: 0px 35px 20px #0f0 inset;
+}
+#yes:hover{  
+    background-color: #0f0;
+    box-shadow: 0px 35px 20px #060 inset;
+}
+#no, .remove{
+    right: 5px;
+    background-color: #f00;
+    box-shadow: 0px 35px 20px #f66 inset;
+}
+#no:hover, .remove:hover{
+    background-color: #f66;
+    box-shadow: 0px 35px 20px #f00 inset;
 }

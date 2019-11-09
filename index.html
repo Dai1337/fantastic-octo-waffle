@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/css.css" />
 </head>
 <body>
+    <h1 id="welcome">Welcome to Class!</h1>
     <form target="table_holder" id="addStudent">
         <label for="newStudent"><h2>Add a new student!</h2></label>
         <input type="text" name="newStudent" id="newStudent" pattern="^[A-Z][a-z]+\s[A-Z][a-z]+$" title="Please provide a First name starting with a capital letter and a Last name with the same parameters." placeholder="First Last" required>
@@ -23,16 +24,14 @@
         <select name="sub4" class="sub" id="sub4" required>
             <option value="">Subject 4</option>
         </select>
-        <button onclick="(newStudent.value) ? addStudent(studentArray) : false;">Add Student</button>
+        <button onmouseup="addStudent(studentArray)">Add Student</button>
     </form>
     <form target="table_holder" id="viewBySubject">
-        <h1 id="welcome">Welcome to Class!</h1>
         <h1>View by Class</h1>
         <label for="whichSubject">Find Students By Subject:</label>
-        <select name="whichSubject" id="whichSubject" class="sub" required>
+        <select onchange="(byClassMode) ? nextClass() :whoIsInMyClass();" name="whichSubject" id="whichSubject" class="sub" required>
             <option value="">Subject</option>
         </select>
-        <button onclick="whoIsInMyClass();" id="whoClass">Submit</button>
         <button onclick="backFromClass();" id="backClass">&#11178;</button>
     </form>
     <form target="table_holder" id="changeGrade">
@@ -48,24 +47,29 @@
     </form>
     <nav>
         <label for="nav"><h3>Find Student</h3></label>
-        <select name="nav" id="nav" onchange="window.location.href = (this.value) ? (this.value):false;">
-            <option value="">Student Name</option>
-        </select>
         <div>
             <a href="#welcome">&#8682;</a>
         </div>
-    </nav>
-    <table id="studentTable">
-        <tr>
-            <th><strong><em>Student Name</em></strong></th>
-            <th>Subject</th>
-            <th>Grade</th>
-            <th>Delete</th>
-        </tr>
-        <caption>All the students</caption>
-    </table>
-    <div name="java"id="java"></div>
-    <iframe src="about:blank" frameborder="0" width="0px" height="0px" name="table_holder"></iframe>
-    <script src="javascript/js.js"></script>
-</body>
-</html>
+        <select name="nav" id="nav" onchange="window.location.href = (this.value) ? (this.value):false;">
+                <option value="">Student Name</option>
+            </select>
+        </nav>
+        <div id="studentTable">
+            <div id="header">
+                <div class="1"><strong><em>Student Name</em></strong></div>
+                <div class="2">Subject</div>
+                <div class="3">Grade</div>
+                <div class="4">Delete</div>
+            </div>
+        </div>
+        <div name="java"id="java"></div>
+        <iframe src="about:blank" frameborder="0" width="0px" height="0px" name="table_holder"></iframe>
+        <div id="confirmContainer" style="display: none;">
+            <div id="confirm">
+                <p id="removeQ"></p>
+                <button id="yes">yes</button>    <button id="no">no</button>
+            </div>
+        </div>
+        <script src="javascript/js.js"></script>
+    </body>
+    </html>

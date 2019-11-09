@@ -41,6 +41,10 @@ var lylahElizabeth = new Students("Lylah Elizabeth", [new Calculus(), new Englis
 var peppaPig = new Students("Peppa Pig", [new Calculus(), new English(), new German(), new SocialStudies()]);
 var studentArray = [davidGarcia,stellaAllets,luisSiul,timMit,freedomGarcia,cocoMae,lylahElizabeth,peppaPig];
 
+const color1 = "#23374d"; //dark blue
+const color2 = "#1089ff"; //bright blue
+const color3 = "#e5e5e5"; //less bright white
+const color4 = "#eeeeee"; //off white
 var rowId = 0; //global variable to be able to redraw the table continuously
 var message = document.getElementById("java"); //allows each function to communicate with the end user
 var studentsInMyClass = new Array(); //global array for whoIsInMyClass function and when the ammended table has to be redrawn
@@ -48,36 +52,33 @@ var byClassMode = false; // turns true when the whoIsInMyClass function is calle
 function makeTable(students){
   for (var i = 0; i < students.length;i++){ 
     for (var x = 0; x < students[i].subjects.length; x++){ // sorts through each subject of each student
-      var studentRow = document.createElement("tr"); // for each subject of each student it creates a row 
+      var studentRow = document.createElement("div"); // for each subject of each student it creates a row 
       studentRow.id = "row" + rowId; // with a different ID
-      (x % 2 == 0) ? studentRow.style.backgroundColor = "rgba(255, 196, 61, 1)":
-      studentRow.style.backgroundColor = "rgba(248, 255, 229, 1)";
+      (x % 2 == 0) ? studentRow.style.backgroundColor = color3:
+      studentRow.style.backgroundColor = color4;
+      studentRow.className = "table";
       document.getElementById("studentTable").appendChild(studentRow); // then adds each row to the table
-      for(var y = 0; y < 3; y++){
-        var studentData = document.createElement("td");
-        var removeStudent = document.createElement("td");
+      for(var y = 0; y < 4; y++){
+        var studentData = document.createElement("div");
+        var removeStudent = document.createElement("div");
         var close = document.createElement("button");
         (y == 0 && x == 0) ? (studentData.innerText = students[i].name, studentData.id = students[i].name) : // important for spacing in the rows to only print the name if it's the first iteration of the student.
-        (y == 1) ? studentData.innerText = students[i].subjects[x].subject :
-        (y == 2) ? studentData.innerText = students[i].subjects[x].grade:
-        studentData.innerText = " ";
+        (y == 1) ? (studentData.innerText = students[i].subjects[x].subject) :
+        (y == 2) ? (studentData.innerText = students[i].subjects[x].grade):
+        (studentData.style.display = "none");
         studentData.style.textAlign = "center";
         document.getElementById("row" + rowId).appendChild(studentData);
         (y == 2 && x == 0) ? ( // if it's the first row and last element for each  it adds a new table data that includes a remove button
-          close.innerText = "⨂",
-          close.style.fontSize = "1.15em",
-          close.style.backgroundColor = "rgba(248, 255, 229, 1)",
-          close.style.borderRadius = "50%",
+        close.innerText = "⨂",
+          close.style.fontSize = "1.5em",
           close.className = ("remove"),
           close.id = (i),
-          close.padding = "9mm",
+          // close.padding = "9mm",
           removeStudent.appendChild(close),
-          removeStudent.style.backgroundColor = "rgba(239, 71, 111, 1)",
-          removeStudent.style.border = "hidden",
-          removeStudent.style.borderRadius = "15px",
-          removeStudent.style.textAlign = "center",
+          removeStudent.style.backgroundColor = color3,
+          removeStudent.style.color = color4,
           document.getElementById("row" + rowId).appendChild(removeStudent)
-        ) : removeStudent.innerText = "";
+          ) : removeStudent.innerText = "";
       }
       rowId++;
     }
@@ -85,12 +86,23 @@ function makeTable(students){
 }
 
 function removeStudent(i){
-  message.innerText = "you have removed " + studentArray[i].name;
-  messageStyle(message);
-  removeTable(studentArray);
-  removeNameDropdown();
-  studentArray.splice(i,1);
-  startUp();
+  let confirm = document.getElementById("confirmContainer");
+  let question = document.getElementById("removeQ");
+  let yes = document.getElementById("yes");
+  let no = document.getElementById("no");
+  confirm.style.display = "block";
+  question.innerText = "Are you sure you want to remove " +((byClassMode)? studentsInMyClass[i].name : studentArray[i].name)+" from School?";
+  yes.onclick = function(){
+    confirm.style.display = "none";
+    message.innerText = "you have removed " + ((byClassMode)? studentsInMyClass[i].name : studentArray[i].name);
+    messageStyle(message);
+    removeTable(studentArray);
+    removeNameDropdown();
+    (byClassMode)? studentsInMyClass.splice(i,1) :studentArray.splice(i,1);
+    startUp();
+  }
+  no.onclick = ()=> confirm.style.display = "none";
+  confirm.onclick = ()=> confirm.style.display = "none";
 }
 
 function removeTable(students) {
@@ -159,9 +171,9 @@ function sortStudents(array){
   
 function whoIsInMyClass(){
   var subjectName = document.getElementById("whichSubject").value;
-  var hideSubmit = document.getElementById("whoClass");
+  // var hideSubmit = document.getElementById("whoClass");
   var displayBack = document.getElementById("backClass");
-  hideSubmit.style.display = "none";
+  // hideSubmit.style.display = "none";
   displayBack.style.display = "initial";
   for (var i = 0; i < studentArray.length; i++){
     for (var x = 0; x < studentArray[i].subjects.length; x++){
@@ -182,18 +194,18 @@ function whoIsInMyClass(){
 }
 
 function backFromClass(){
-  var displaySubmit = document.getElementById("whoClass");
   var hideBack = document.getElementById("backClass");
-  displaySubmit.style.display = "initial";
   hideBack.style.display = "none";
   removeTable(studentsInMyClass);
   removeNameDropdown();
   studentsInMyClass = [];
-  // for (i in studentsInMyClass){
-  //   studentsInMyClass[i].delete;
-  // }
   startUp();
   byClassMode = false;
+}
+
+function nextClass(){
+  backFromClass();
+  whoIsInMyClass();
 }
 
 function messageStyle(message){
@@ -205,7 +217,7 @@ function messageStyle(message){
   message.style.width = "25%";
   message.style.bottom = "0px";
   message.style.borderRadius = "15px";
-  message.style.backgroundColor = "rgba(255, 196, 61, 1)";
+  message.style.backgroundColor = color2;
   message.style.padding = "10px";
   message.style.textAlign = "center";
   var opacity = 100;
@@ -251,37 +263,37 @@ function addStudent(students){
     for (x = 1; x < 5; x++){ // takes the values of subject the user inputs and runs a loop on the subject array to pull the constructor functions of each subject inputed.
       for (y = 0; y < subArray.length; y++){
         if (document.getElementById("sub" + x).value == subArray[y].subject){
-          newSubs.push(subArray[y]); // takes each contructor that matches the user input and makes a new array to be refferenced by the Students constructor.
+          newSubs.push(subArray[y]); // takes each contructor that matches the user input and makes a new array to be refferenced by the Students consdivuctor.
         }
       }
     }
     var newStudent= new Students(name,[newSubs[0],newSubs[1],newSubs[2],newSubs[3]]);
     students.push(newStudent); // adds the new Student to the outside array
     for (i = 0; i < newStudent.subjects.length; i++){ // runs a similar function to makeTable, but the distinction lies within the need to append the table instead of remake it.
-      var newRow = document.createElement("tr");
+      var newRow = document.createElement("div");
       newRow.id = "row" + rowId;
-      (i % 2 == 0) ? newRow.style.backgroundColor = "rgba(255, 196, 61, 1)":
-                      newRow.style.backgroundColor = "rgba(248, 255, 229, 1)";
+      (i % 2 == 0) ? newRow.style.backgroundColor = color3:
+                     newRow.style.backgroundColor = color4;
       document.getElementById("studentTable").appendChild(newRow);
       for (x = 0; x < 3; x++){
-        var newData = document.createElement("td");
-        (x == 0 && i == 0) ? (newData.innerText = newStudent.name, newData.id = newStudent.name): // important for spacing in the rows to only print the name if it's the first iteration of the student.
-        (x == 1) ? newData.innerText = newStudent.subjects[i].subject :
-        (x == 2) ? newData.innerText = newStudent.subjects[i].grade:
-        newData.innerText = " ";
-        newData.style.textAlign = "center";
+        var newData = document.createElement("p");
+        (x == 0 && i == 0) ? (newData.innerText = newStudent.name, newData.id = newStudent.name, newData.style.textAlign ="left"): // important for spacing in the rows to only print the name if it's the first iteration of the student.
+                  (x == 1) ? (newData.innerText = newStudent.subjects[i].subject, newData.style.textAlign = "center"):
+                  (x == 2) ? (newData.innerText = newStudent.subjects[i].grade, newData.style.textAlign = "right"):
+                  (newData.innerText = " ", newData.style.textAlign = "right");
+        // newData.style.textAlign = "center";
         document.getElementById("row"+rowId).appendChild(newData);
         message.innerHTML = name + " has been added to the table!"; // lets the user know that the function has run.
         messageStyle(message);
         (y == 2 && x == 0) ? (
         close.innerText = "⨂",
         close.style.fontSize = "1.15em",
-        close.style.backgroundColor = "rgba(248, 255, 229, 1)",
+        close.style.backgroundColor = color3,
         close.style.borderRadius = "50%",
         close.className = ("remove"),
         close.id = (i),
         removeStudent.appendChild(close),
-        removeStudent.style.backgroundColor = "rgba(239, 71, 111, 1)",
+        removeStudent.style.backgroundColor = color1,
         removeStudent.style.border = "hidden",
         removeStudent.style.borderRadius = "15px",
         removeStudent.style.textAlign = "center",
@@ -322,6 +334,7 @@ function startUp(){ // condensing code that is used over and over
   setStudentNav(studentArray);
   makeButtons();
 }
-
-setSubjectsDropdown(subArray);
-startUp();
+window.onload = function(){
+  setSubjectsDropdown(subArray);
+  startUp();
+}
